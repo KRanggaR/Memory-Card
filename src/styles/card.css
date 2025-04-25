@@ -1,0 +1,24 @@
+
+.card-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.581);
+    border-radius: 1rem;
+    padding: 1rem;
+    transition: transform 300ms ease, box-shadow 300ms ease;
+}
+.card-container:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 20px rgba(0,255,255,0.5);
+  }
+.pokemon-image{
+    width: 12rem;
+}
+
+.pokemon-name{
+    color: black;
+    font: 600;
+    font-size: 1.5rem;
+}
