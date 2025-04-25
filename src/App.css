@@ -1,0 +1,11 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    background: linear-gradient(rgba(0, 0, 0, 58%), rgba(0, 0, 0, 38%)), url('/assets/pokemon-background.png');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+}
