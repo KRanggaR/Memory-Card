@@ -1,17 +1,21 @@
-import React, {useState} from 'react'
+import React, { useEffect, useReducer } from 'react';
+import { gameReducer, initialState } from './reducer/gameReducer';
+import '../styles/game.css';
+import Card from './Card';
 
-function getRandomIds(length){
-    const max=1000;
+function getRandomIds(length) {
+    const max = 1000;
     const ids = new Set();
-    while(ids.size < length) {
-        const randomId = Math.floor(Math.random()*max);
+    while (ids.size < length) {
+        const randomId = Math.floor(Math.random() * max);
         ids.add(randomId);
     }
-    return Array.from(ids); 
+    return Array.from(ids);
 }
-function Game({length=5}) {
-    const [data, setData] = useState([]);
-    
+function Game({ length = 5 }) {
+    const [state, dispatch] = useReducer(gameReducer, initialState);
+    // const [data, setData] = useState([]);
+
     const fetchPokemonData = async () => {
         try {
             const ids = getRandomIds(length);
@@ -28,8 +32,13 @@ function Game({length=5}) {
                     };
                 })
             );
-            setData(detailedData);
-            console.log(detailedData)
+            dispatch({
+                type: 'SET_POKEMONS',
+                payload: detailedData,
+            });
+
+            // setData(detailedData);
+            // console.log(detailedData)
         }
 
         catch (err) {
@@ -37,10 +46,45 @@ function Game({length=5}) {
         };
 
     }
+    useEffect(() => {
+        fetchPokemonData();
+    }, []);
+
+    const AddPokemon = (id) => {
+        dispatch({
+            type: 'SELECT_POKEMON',
+            payload: id,
+        })
+        
+    }
+    console.log(state)
     return (
         <>
-            <button onClick={fetchPokemonData}>FetchPokemons</button>
+            <div className='game-container'>
+                <div className='game-title'>
+                    <img className='pokemon-ball-svg' src='../assets/pokemon-ball.svg' ></img>
+                    <h2> Pokemon Memory Game</h2>
+                    <img className='pokemon-ball-svg' src='../assets/pokemon-ball.svg'></img>
+                </div>
+                <div className="game-rule">
+                    <p>Get points by clicking on a pokemon but don't click on any more than once!</p>
+                </div>
+
+
+                <div className='pokemon-container'>
+                    {
+                        state.pokemons.map((pokemon, index) =>
+                            <Card
+                                pokemon={pokemon} key={pokemon.id} index={index}
+                                AddPokemon={() => AddPokemon(pokemon.id)}
+                            />
+                        )
+                    }
+                </div>
+
+            </div>
         </>
+        
     )
 }
 
