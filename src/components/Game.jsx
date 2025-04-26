@@ -3,6 +3,7 @@ import { gameReducer, initialState } from './reducer/gameReducer';
 import '../styles/game.css';
 import Card from './Card';
 import EndGame from './EndGame';
+import Difficulty from './Difficulty';
 
 function getRandomIds(length) {
     const max = 1000;
@@ -13,13 +14,13 @@ function getRandomIds(length) {
     }
     return Array.from(ids);
 }
-function Game({ length = 5 }) {
+function Game() {
     const [state, dispatch] = useReducer(gameReducer, initialState);
     // const [data, setData] = useState([]);
 
     const fetchPokemonData = async () => {
         try {
-            const ids = getRandomIds(length);
+            const ids = getRandomIds(state.length);
 
             const detailedData = await Promise.all(
                 ids.map(async (id) => {
@@ -49,19 +50,30 @@ function Game({ length = 5 }) {
     }
     useEffect(() => {
         fetchPokemonData();
-    }, []);
+    }, [state.length]);
 
     const AddPokemon = (id) => {
         dispatch({
             type: 'SELECT_POKEMON',
             payload: id,
         })
-        
+
     }
-    console.log(state)
+
+    const resetGame = async () => {
+        dispatch({ type: 'RESET_GAME' })
+        await fetchPokemonData();
+
+    };
+
+    function getDifficulty(newLength) {
+        dispatch({ type: 'RESET_GAME' });
+        dispatch({ type: 'SET_LENGTH', payload: newLength })
+    }
+    // console.log(state)
     return (
         <>
-        <EndGame score={state}/>
+            <EndGame state={state} resetGame={resetGame} />
             <div className='game-container'>
                 <div className='game-title'>
                     <img className='pokemon-ball-svg' src='../assets/pokemon-ball.svg' ></img>
@@ -71,6 +83,15 @@ function Game({ length = 5 }) {
                 <div className="game-rule">
                     <p>Get points by clicking on a pokemon but don't click on any more than once!</p>
                 </div>
+                <div className='difficulty-level-conatiner'>
+                    <p>Please Select a Difficulty</p>
+                    <div className='difficulty-level-buttons'>
+                        <Difficulty text='Easy' getDifficulty={()=>getDifficulty(5)}/>
+                        <Difficulty text='Medium' getDifficulty={()=>getDifficulty(10)}/>
+                        <Difficulty text='Hard' getDifficulty={()=>getDifficulty(15)}/>
+                    </div>
+                </div>
+
                 <div className='game-score'>
                     <p>Current Score : {state.currentScore}</p>
                     <p>Best Score : {state.bestScore}</p>
@@ -89,9 +110,9 @@ function Game({ length = 5 }) {
                     }
                 </div>
             </div>
-                    
+
         </>
-        
+
     )
 }
 

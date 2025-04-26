@@ -2,7 +2,7 @@ import React from 'react'
 import '../styles/card.css';
 
 function Card({ pokemon, AddPokemon }) {
-console.log(pokemon.name, pokemon.id)
+// console.log(pokemon.name, pokemon.id)
   return (
 
     <>

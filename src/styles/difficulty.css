@@ -1,0 +1,9 @@
+.difficulty-level-button{
+    font-size: 1.2rem;
+    border: 1px solid white;
+    color: white;
+    background: black;
+    padding: 0.8rem 1.8rem;
+    border-radius: 1rem;
+    font-weight: 500;
+}
