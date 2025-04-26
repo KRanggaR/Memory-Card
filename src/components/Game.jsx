@@ -2,6 +2,7 @@ import React, { useEffect, useReducer } from 'react';
 import { gameReducer, initialState } from './reducer/gameReducer';
 import '../styles/game.css';
 import Card from './Card';
+import EndGame from './EndGame';
 
 function getRandomIds(length) {
     const max = 1000;
@@ -60,6 +61,7 @@ function Game({ length = 5 }) {
     console.log(state)
     return (
         <>
+        <EndGame score={state}/>
             <div className='game-container'>
                 <div className='game-title'>
                     <img className='pokemon-ball-svg' src='../assets/pokemon-ball.svg' ></img>
@@ -69,6 +71,11 @@ function Game({ length = 5 }) {
                 <div className="game-rule">
                     <p>Get points by clicking on a pokemon but don't click on any more than once!</p>
                 </div>
+                <div className='game-score'>
+                    <p>Current Score : {state.currentScore}</p>
+                    <p>Best Score : {state.bestScore}</p>
+                </div>
+
 
 
                 <div className='pokemon-container'>
@@ -81,8 +88,8 @@ function Game({ length = 5 }) {
                         )
                     }
                 </div>
-
             </div>
+                    
         </>
         
     )

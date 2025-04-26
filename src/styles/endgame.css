@@ -1,0 +1,42 @@
+.end-game-container{
+    position: absolute;
+    top: 40%;
+    left: 42%;
+    z-index: 3;
+}
+
+.end-game-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(255, 255, 255);
+    color: black;
+    border-radius: 1rem;
+    padding: 1rem;
+    max-width: 38%;
+}
+
+.end-game-box p {
+    font-size: 1.5rem;
+}
+
+.end-game-image {
+    width: 66%;
+}
+
+.end-game-button {
+    font-size: 1rem;
+    color: white;
+    background: black;
+    padding: 0.4rem 0.8rem;
+    border-radius: 1rem;
+    border: none;
+    font-weight: 500;
+}
+
+.end-game-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(0,255,255,0.5);
+}
