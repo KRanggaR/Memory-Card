@@ -1,8 +1,14 @@
 .end-game-container{
     position: absolute;
-    top: 40%;
-    left: 42%;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
     z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
 }
 
 .end-game-box {
@@ -15,11 +21,13 @@
     color: black;
     border-radius: 1rem;
     padding: 1rem;
-    max-width: 38%;
+    max-width: 11%;
+    font-size: 1vw;
 }
 
 .end-game-box p {
     font-size: 1.5rem;
+    font-size: 1vw;
 }
 
 .end-game-image {
@@ -34,6 +42,7 @@
     border-radius: 1rem;
     border: none;
     font-weight: 500;
+    font-size: 1vw;
 }
 
 .end-game-button:hover {

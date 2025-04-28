@@ -5,6 +5,7 @@ import Card from './Card';
 import EndGame from './EndGame';
 import Difficulty from './Difficulty';
 import Buffer from './Buffer';
+import pokeBall from '../../public/assets/pokemon-ball.svg';  
 
 function getRandomIds(length) {
     const max = 1000;
@@ -94,9 +95,9 @@ function Game() {
             <EndGame state={state} resetGame={resetGame} />
             <div className='game-container'>
                 <div className='game-title'>
-                    <img className='pokemon-ball-svg' src='../assets/pokemon-ball.svg' alt="Pokemon Ball" />
+                    <img className='pokemon-ball-svg' src={pokeBall} alt="Pokemon Ball" />
                     <h2>Pokemon Memory Game</h2>
-                    <img className='pokemon-ball-svg' src='../assets/pokemon-ball.svg' alt="Pokemon Ball" />
+                    <img className='pokemon-ball-svg' src={pokeBall} alt="Pokemon Ball" />
                 </div>
                 <div className="game-rule">
                     <p>Get points by clicking on a pokemon but don't click on any more than once!</p>
