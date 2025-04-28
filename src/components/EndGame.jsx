@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/endgame.css';
-import sadImage from '../../public/assets/sad.png';  
-import happyImage from '../../public/assets/happy.png';  
+import sadImage from '/assets/sad.png';  
+import happyImage from '/assets/happy.png';  
 
 export default function EndGame({ state: { currentScore, gameEnded, pokemons, error }, resetGame }) {
   return (

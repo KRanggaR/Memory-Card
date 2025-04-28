@@ -5,7 +5,7 @@ import Card from './Card';
 import EndGame from './EndGame';
 import Difficulty from './Difficulty';
 import Buffer from './Buffer';
-import pokeBall from '../../public/assets/pokemon-ball.svg';  
+import pokeBall from '/assets/pokemon-ball.svg';  
 
 function getRandomIds(length) {
     const max = 1000;
