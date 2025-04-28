@@ -3,24 +3,45 @@ export const initialState = {
   selectedPokemonsID: [],
   currentScore: 0,
   bestScore: 0,
-  gameIsIdle: true,
+  gameIsBuffering: true,
   gameEnded: false,
-  length: 5,
+  length: 4,
+  error: '',
 };
 
 export const gameReducer = (state, action) => {
   switch (action.type) {
-    case 'SET_LENGTH':
+    case 'DIFFICUILTY_ASSIGNED':
       return {
         ...state,
         length: action.payload,
+        bestScore: 0,
+        gameIsBuffering: true,
       };
 
-    case 'SET_POKEMONS':
+    case 'UPDATE_POKEMONS':
+      return {
+        ...state,
+        pokemons: action.payload,
+      };
+
+    case 'DATA_FETCHED_SUCCESS':
       return {
         ...state,
         pokemons: action.payload,
         currentScore: 0,
+        gameIsBuffering: false,
+        error: '',
+
+      };
+
+    case 'DATA_FETCHED_FAILED':
+      return {
+        ...state,
+        gameIsBuffering: false,
+        error: action.payload,
+        gameEnded: false,
+
       };
 
     case 'SELECT_POKEMON': {
@@ -52,6 +73,7 @@ export const gameReducer = (state, action) => {
         currentScore: 0,
         gameEnded: false,
         selectedPokemonsID: [],
+        gameIsBuffering: true,
       };
     default:
       return state;

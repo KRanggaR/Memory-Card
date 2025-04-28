@@ -4,6 +4,7 @@ import '../styles/game.css';
 import Card from './Card';
 import EndGame from './EndGame';
 import Difficulty from './Difficulty';
+import Buffer from './Buffer';
 
 function getRandomIds(length) {
     const max = 1000;
@@ -14,9 +15,18 @@ function getRandomIds(length) {
     }
     return Array.from(ids);
 }
+
+// Fisher-Yates Shuffle function to shuffle array in-place
+const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+    }
+    return array;
+};
+
 function Game() {
     const [state, dispatch] = useReducer(gameReducer, initialState);
-    // const [data, setData] = useState([]);
 
     const fetchPokemonData = async () => {
         try {
@@ -34,20 +44,21 @@ function Game() {
                     };
                 })
             );
+
             dispatch({
-                type: 'SET_POKEMONS',
+                type: 'DATA_FETCHED_SUCCESS',
                 payload: detailedData,
             });
-
-            // setData(detailedData);
-            // console.log(detailedData)
         }
-
         catch (err) {
             console.error(err.message);
+            dispatch({
+                type: 'DATA_FETCHED_FAILED',
+                payload: err.message,
+            });
         };
-
     }
+
     useEffect(() => {
         fetchPokemonData();
     }, [state.length]);
@@ -56,29 +67,36 @@ function Game() {
         dispatch({
             type: 'SELECT_POKEMON',
             payload: id,
-        })
+        });
 
+        // Shuffle the pokemons after each card click
+        const shuffledPokemons = shuffleArray([...state.pokemons]);
+        dispatch({
+            type: 'UPDATE_POKEMONS',
+            payload: shuffledPokemons,
+        });
     }
 
     const resetGame = async () => {
-        dispatch({ type: 'RESET_GAME' })
-        await fetchPokemonData();
-
+        dispatch({ type: 'RESET_GAME' });
+        setTimeout(fetchPokemonData, 300);
     };
 
     function getDifficulty(newLength) {
-        dispatch({ type: 'RESET_GAME' });
-        dispatch({ type: 'SET_LENGTH', payload: newLength })
+        if (state.length !== newLength) {
+            dispatch({ type: 'DIFFICUILTY_ASSIGNED', payload: newLength });
+        }
     }
-    // console.log(state)
+
     return (
         <>
+            {state.gameIsBuffering && <Buffer />}
             <EndGame state={state} resetGame={resetGame} />
             <div className='game-container'>
                 <div className='game-title'>
-                    <img className='pokemon-ball-svg' src='../assets/pokemon-ball.svg' ></img>
-                    <h2> Pokemon Memory Game</h2>
-                    <img className='pokemon-ball-svg' src='../assets/pokemon-ball.svg'></img>
+                    <img className='pokemon-ball-svg' src='../assets/pokemon-ball.svg' alt="Pokemon Ball" />
+                    <h2>Pokemon Memory Game</h2>
+                    <img className='pokemon-ball-svg' src='../assets/pokemon-ball.svg' alt="Pokemon Ball" />
                 </div>
                 <div className="game-rule">
                     <p>Get points by clicking on a pokemon but don't click on any more than once!</p>
@@ -86,9 +104,9 @@ function Game() {
                 <div className='difficulty-level-conatiner'>
                     <p>Please Select a Difficulty</p>
                     <div className='difficulty-level-buttons'>
-                        <Difficulty text='Easy' getDifficulty={()=>getDifficulty(5)}/>
-                        <Difficulty text='Medium' getDifficulty={()=>getDifficulty(10)}/>
-                        <Difficulty text='Hard' getDifficulty={()=>getDifficulty(15)}/>
+                        <Difficulty text='Easy' getDifficulty={() => getDifficulty(4)} />
+                        <Difficulty text='Medium' getDifficulty={() => getDifficulty(8)} />
+                        <Difficulty text='Hard' getDifficulty={() => getDifficulty(12)} />
                     </div>
                 </div>
 
@@ -97,22 +115,18 @@ function Game() {
                     <p>Best Score : {state.bestScore}</p>
                 </div>
 
-
-
                 <div className='pokemon-container'>
                     {
-                        state.pokemons.map((pokemon, index) =>
+                        state.pokemons.map((pokemon) =>
                             <Card
-                                pokemon={pokemon} key={pokemon.id} index={index}
+                                pokemon={pokemon} key={pokemon.id}
                                 AddPokemon={() => AddPokemon(pokemon.id)}
                             />
                         )
                     }
                 </div>
             </div>
-
         </>
-
     )
 }
 
